@@ -28,23 +28,56 @@ with open("budget_data.csv") as csvfile:
 print(f"Total: ${net_total}")
 
 # The average of the changes in "Profit/Losses" over the entire period
-with open("budget_data.csv", 'r') as csvfile, open("delta.csv", 'w+') as csvoutput:
-    pybank_dict = csv.DictReader(csvfile)
-    fieldnames = pybank_dict.fieldnames + ['Change']
-    change_dict = csv.DictWriter(csvoutput, fieldnames)
-    change_dict.writeheader()
-    for change, row in enumerate(pybank_dict, 0):
-        change_dict.writerow(dict(row, Change='delta here'))
+# Lists
+with open("budget_data.csv") as csvfile:
+    pybank_reader = csv.reader(csvfile, delimiter=',')
+    pybank_header = next(pybank_reader)
 
-with open("delta.csv") as csvfile: 
-    delta_dict = csv.DictReader(csvfile, 'r')   
-    for line in delta_dict:
-        print(line)
-        #delta = row['Profit/Losses']
-        #pybank_dict.update({'Change': delta})  
+    month_list = []
+    for row in pybank_reader:
+        month_list.append(row[0])
+    #print(month_list)
 
+with open("budget_data.csv") as csvfile:
+    pybank_reader = csv.reader(csvfile, delimiter=',')
+    pybank_header = next(pybank_reader)
 
+    profit_list = []
+    for row in pybank_reader:
+        profit_list.append(row[1])  
+    #print(profit_list)
+    
+    changes = [int(profit_list[i + 1]) - int(profit_list[i]) for i in range(len(profit_list)-1)]
+    #changes = [j - i for i, j in zip(profit_list[: -1], profit_list[1 :])]
+    #print(str(changes))
+    
+    average = round(sum(changes) / len(changes),2)
+    print(f"Average Change: ${average}")
 
 # The greatest increase in profits (date and amount) over the entire period
+    increase = max(changes)
+    max_changes_index = (changes.index(increase)+1)
+    print(f"Greatest Increase in Profits: {month_list[max_changes_index]}  (${increase})")
 
-# The greatest decrease in losses (date and amount) over the entire 
+# The greatest decrease in losses (date and amount) over the entire     
+    decrease = min(changes)
+    min_changes_index = (changes.index(increase)+1)
+    print(f"Greatest Decrease in Profits: {month_list[min_changes_index]}  (${decrease})")
+    
+# Output
+
+f = open("results.txt","w+")
+
+f.write("Financial Analysis\n")
+f.write("-------------------------\n")
+f.write(f"Total Months: {total_months}\n")
+f.write(f"Total: ${net_total}\n")
+f.write(f"Average Change: ${average}\n")
+f.write(f"Greatest Increase in Profits: {month_list[max_changes_index]}  (${increase})\n")
+f.write(f"Greatest Decrease in Profits: {month_list[min_changes_index]}  (${decrease})\n")
+
+f.close()
+    
+
+
+
