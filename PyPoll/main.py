@@ -37,19 +37,20 @@ vote_count = collections.Counter(e['Candidate'] for e in mydict)
 print(f"Khan: {vote_count['Khan']}")
 print(f"Correy: {vote_count['Correy']}")
 print(f"Li: {vote_count['Li']}")
-# print(f"O'Tooley: {vote_count[str["O'Tooley"]}")
+OTooley_votecount = vote_count["O'Tooley"]
+print(f"O'Tooley: {OTooley_votecount}")
 
 
 # The percentage of votes each candidate won
 Khan_p = round(((vote_count['Khan'] / total_votes) * 100),3)
 Correy_p = round(((vote_count['Correy'] / total_votes) * 100),3)
 Li_p = round(((vote_count['Li'] / total_votes) * 100),3)
-# OTooley_p = round(((vote_count["O'Tooley"] / total_votes) * 100), 5)
+OTooley_p = round(((OTooley_votecount / total_votes) * 100), 5)
 
 print(f"Khan: {Khan_p}%")
 print(f"Correy: {Correy_p}%")
 print(f"Li: {Li_p}%")
-#print(f"O'Tooley: {OTooley_p}%")
+print(f"O'Tooley: {OTooley_p}%")
 
 # The winner of the election based on popular vote.
 winner = max(vote_count, key=vote_count.get)
@@ -66,7 +67,7 @@ f.write("-------------------------\n")
 f.write(f"Khan: {Khan_p}%  ({vote_count['Khan']})\n")
 f.write(f"Correy: {Correy_p}%  ({vote_count['Correy']})\n")
 f.write(f"Li: {Li_p}%  ({vote_count['Li']})\n")
-#f.write(f"O'Tooley: {OTooley_p}%  ({vote_count[str["O'Tooley"]})\n")
+f.write(f"O'Tooley: {OTooley_p}%  ({OTooley_votecount})\n")
 f.write("-------------------------\n")
 f.write(f"Winner: {winner}\n")
 f.write("-------------------------\n")
